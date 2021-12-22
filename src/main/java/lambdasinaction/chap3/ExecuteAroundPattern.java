@@ -3,6 +3,7 @@ package lambdasinaction.chap3;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.Buffer;
 
 public class ExecuteAroundPattern {
 
@@ -12,6 +13,19 @@ public class ExecuteAroundPattern {
         System.out.println(oneLine);
         String result = processFile((BufferedReader br) -> br.readLine() + br.readLine());
         System.out.println(result);
+
+        BufferedReaderProcessor p = (BufferedReader br) -> br.readLine();
+        System.out.println(p);
+
+        //명시적으로 확인된 예외를 잡을 수 있다.
+        Function<BufferedReader, String> f = (BufferedReader b) -> {
+            try {
+                return b.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        System.out.println(f);
     }
 
     //함수형 인터페이스를 이용해서 람다를 전달하는 방법
@@ -27,5 +41,10 @@ public class ExecuteAroundPattern {
     @FunctionalInterface
     public interface BufferedReaderProcessor { //정의한 인터페이스를 processFile 메서드의 인수로 전달할 수 있다.
         String process(BufferedReader b) throws IOException;
+    }
+
+    @FunctionalInterface
+    public interface Function<T, R>{
+        R apply(T t);
     }
 }
