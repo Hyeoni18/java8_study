@@ -51,6 +51,16 @@ public class ThreeDotMore {
 		//이렇게 인스턴스화하지 않고도 생성자에 접근할 수 있는 기능을 다양한 상황에 응용할 수 있다.
 
 //		TriFunction<Integer, Integer, Integer, Color> color = Color::new; // go to line 121
+
+		//3.8.3 Function 조합
+		//andThen 주어진 함수를 먼저 적용한 결과를 다른 함수의 입력으로 전달하는 함수를 반환한다.
+		Function<Integer, Integer> f = x -> x+1;
+		Function<Integer, Integer> g = x -> x*2;
+		Function<Integer, Integer> h = f.andThen(g); //f 함수 먼저 실행
+		int result = h.apply(1); //4를 반환
+		//compose 메서드는 인수로 주어진 함수를 먼저 실행한 다음에 그 결과를 외부 함수의 인수로 제공한다.
+		Function<Integer, Integer> j = f.compose(g); //g 함수 먼저 실행
+		result = j.apply(1); //3을 반환
 	}
 
 	//그리고 String, Integer가 주어졌을 때 다양한 무게를 갖는 여러 종류의 과일을 만드는 giveMeFruit라는 메서드를 만들 수 있다.
